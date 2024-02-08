@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #333; color: white; text-align: center; }
+        .container { max-width: 600px; margin: auto; padding: 20px; }
+        .header { display: flex; justify-content: space-between; padding: 10px; }
+        .note { color: #aaa; font-size: 14px; cursor: pointer; float: right; }
+        .search-box, .current-weather, .weather-history { margin: 20px auto; }
+        input[type="text"], button { padding: 10px; margin: 5px; border-radius: 5px; border: none; }
+        button { cursor: pointer; background-color: #007BFF; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        table { width: 100%; margin-top: 20px; }
+        th, td { padding: 10px; border-bottom: 1px solid #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="note" onclick="window.location='https://www.google.com';">Home</div>
+        </div>
+        <div class="search-box">
+            <form action="/" method="post">
+                <input type="text" name="city" placeholder="Enter a city" required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        {% if weather_data %}
+        <div class="current-weather">
+            <h3>Current Weather</h3>
+            <table>
+                <tr><th>City</th><td>{{ weather_data['city']['name'] }}</td></tr>
+                <tr><th>Temperature</th><td>{{ weather_data['list'][0]['main']['temp'] }}°C</td></tr>
+                <tr><th>Weather</th><td>{{ weather_data['list'][0]['weather'][0]['description'] }}</td></tr>
+            </table>
+        </div>
+        <div class="weather-history">
+            <h3>Last 7 Entries Forecast</h3>
+            <table>
+                <tr><th>Date</th><th>Temperature</th><th>Weather</th></tr>
+                {% for day in forecast_data %}
+                <tr><td>{{ day['date'] }}</td><td>{{ day['temp'] }}°C</td><td>{{ day['weather'] }}</td></tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% elif error %}
+            <p>{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>
